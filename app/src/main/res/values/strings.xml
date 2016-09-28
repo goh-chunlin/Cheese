@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Cheese</string>
 
+    <color name="white">#FFFFFF</color>
+
     <string name="btn_chinese_voice_input">华语输入</string>
     <string name="action_settings">Settings</string>
 </resources>
