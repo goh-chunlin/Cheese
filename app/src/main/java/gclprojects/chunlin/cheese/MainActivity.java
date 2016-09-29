@@ -1,16 +1,28 @@
 package gclprojects.chunlin.cheese;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    Button btnChineseVoiceInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        btnChineseVoiceInput = (Button) findViewById(R.id.btnChineseVoiceInput);
+        btnChineseVoiceInput.setOnClickListener(new ButtonChineseVoiceInput(this));
     }
 
     @Override
@@ -33,5 +45,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == ButtonChineseVoiceInput.check && resultCode == Activity.RESULT_OK) {
+            ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+            if (results.size() == 0) {
+                Toast.makeText(this, "何と言いましたか？", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "あなたの言：" + results.get(0) , Toast.LENGTH_LONG).show();
+            }
+
+
+        }
     }
 }

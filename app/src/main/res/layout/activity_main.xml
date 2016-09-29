@@ -12,13 +12,15 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        <ImageView android:layout_width="wrap_content"
+        <ImageView
             android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
             android:src="@drawable/cheese"
             android:layout_height="200dp">
         </ImageView>
 
         <Button
+            android:id="@+id/btnChineseVoiceInput"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
