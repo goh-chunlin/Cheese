@@ -2,11 +2,8 @@ package gclprojects.chunlin.cheese;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
-import android.widget.Toast;
-import java.util.ArrayList;
 
 public class ButtonChineseVoiceInput implements View.OnClickListener {
 
