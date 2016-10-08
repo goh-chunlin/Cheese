@@ -78,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
                     String query = URLEncoder.encode(results.get(0), "utf-8");
 
                     new Json(this, "https://api.projectoxford.ai/luis/v1/application?" +
-                            "id=5087c95c-e54d-4970-970e-7af4709cdb32&subscription-key=7a1b29b739a543e6ae63ae51aedcfbf0&" +
+                            "id=" + this.getString(R.string.MICROSOFT_COGNITIVE_ID) + "&" +
+                            "subscription-key=" + this.getString(R.string.MICROSOFT_COGNITIVE_SUBSCRIPTION_KEY) + "&" +
                             "q=" + query, tts).execute();
 
                 } catch (UnsupportedEncodingException e) {
