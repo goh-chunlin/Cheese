@@ -3,6 +3,10 @@
 
     <color name="white">#FFFFFF</color>
 
-    <string name="btn_chinese_voice_input">华语输入</string>
+    <string name="btn_voice_input_to_japanese">日语</string>
+    <string name="btn_voice_input_to_cantonese">粤语</string>
+    <string name="btn_voice_input_to_english">英语</string>
+    <string name="btn_voice_input_to_indonesian">印尼语</string>
+    <string name="btn_voice_input_to_vietnamese">越南语</string>
     <string name="action_settings">Settings</string>
 </resources>

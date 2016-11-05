@@ -3,20 +3,18 @@ package gclprojects.chunlin.cheese;
 import android.app.Activity;
 import android.content.Intent;
 import android.speech.RecognizerIntent;
-import android.view.View;
 
-public class ButtonChineseVoiceInput implements View.OnClickListener {
+public class ButtonVoiceInput {
 
-    static final int check = 999;
+    protected Activity mContext;
 
-    private Activity mContext;
+    protected static int check = -1;
 
-    public ButtonChineseVoiceInput(Activity activity){
+    public ButtonVoiceInput(Activity activity){
         this.mContext = activity;
     }
 
-    @Override
-    public void onClick(View v) {
+    protected Intent CreateGoogleSpeechInput() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hello!");
@@ -28,6 +26,6 @@ public class ButtonChineseVoiceInput implements View.OnClickListener {
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "zh");
         intent.putExtra(RecognizerIntent.EXTRA_RESULTS, "zh");
 
-        mContext.startActivityForResult(intent, check);
+        return intent;
     }
 }

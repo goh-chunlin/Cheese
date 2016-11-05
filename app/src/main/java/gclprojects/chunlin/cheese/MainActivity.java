@@ -19,7 +19,11 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnChineseVoiceInput;
+    Button btnVoiceInputReturnsJapanese;
+    Button btnVoiceInputReturnsCantonese;
+    Button btnVoiceInputReturnsEnglish;
+    Button btnVoiceInputReturnsIndonesian;
+    Button btnVoiceInputReturnsVietnamese;
 
     public static TextToSpeech tts;
 
@@ -28,8 +32,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnChineseVoiceInput = (Button) findViewById(R.id.btnChineseVoiceInput);
-        btnChineseVoiceInput.setOnClickListener(new ButtonChineseVoiceInput(this));
+        btnVoiceInputReturnsJapanese = (Button) findViewById(R.id.btnVoiceInputReturnsJapanese);
+        btnVoiceInputReturnsJapanese.setOnClickListener(new ButtonVoiceInputReturnsJapanese(this));
+
+        btnVoiceInputReturnsCantonese = (Button) findViewById(R.id.btnVoiceInputReturnsCantonese);
+        btnVoiceInputReturnsCantonese.setOnClickListener(new ButtonVoiceInputReturnsCantonese(this));
+
+        btnVoiceInputReturnsEnglish = (Button) findViewById(R.id.btnVoiceInputReturnsEnglish);
+        btnVoiceInputReturnsEnglish.setOnClickListener(new ButtonVoiceInputReturnsEnglish(this));
+
+        btnVoiceInputReturnsIndonesian = (Button) findViewById(R.id.btnVoiceInputReturnsIndonesian);
+        btnVoiceInputReturnsIndonesian.setOnClickListener(new ButtonVoiceInputReturnsIndonesian(this));
+
+        btnVoiceInputReturnsVietnamese = (Button) findViewById(R.id.btnVoiceInputReturnsVietnamese);
+        btnVoiceInputReturnsVietnamese.setOnClickListener(new ButtonVoiceInputReturnsVietnamese(this));
 
         tts = new TextToSpeech(MainActivity.this, new TextToSpeech.OnInitListener() {
 
@@ -66,31 +82,58 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == ButtonChineseVoiceInput.check && resultCode == Activity.RESULT_OK) {
-            ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+        if (resultCode == Activity.RESULT_OK) {
 
-            if (results.size() == 0) {
-                Toast.makeText(this, "何と言いましたか？", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "あなたの言：" + results.get(0) , Toast.LENGTH_LONG).show();
+            String targetedLanguage = GetTargetedLanguage(requestCode);
 
-                try {
-                    String query = URLEncoder.encode(results.get(0), "utf-8");
+            if (!targetedLanguage.isEmpty()) {
 
-                    new Json(this, "https://api.projectoxford.ai/luis/v1/application?" +
-                            "id=" + this.getString(R.string.MICROSOFT_COGNITIVE_ID) + "&" +
-                            "subscription-key=" + this.getString(R.string.MICROSOFT_COGNITIVE_SUBSCRIPTION_KEY) + "&" +
-                            "q=" + query, tts).execute();
+                ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
-                } catch (UnsupportedEncodingException e) {
+                if (results.size() == 0) {
+                    Toast.makeText(this, "何と言いましたか？", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "あなたの言：" + results.get(0) , Toast.LENGTH_LONG).show();
 
-                    Log.e("Google Speech Input", e.getMessage());
+                    try {
+                        String query = URLEncoder.encode("请翻译" + results.get(0) + "去" + targetedLanguage, "utf-8");
+
+                        new Json(this, "https://api.projectoxford.ai/luis/v1/application?" +
+                                "id=" + this.getString(R.string.MICROSOFT_COGNITIVE_ID) + "&" +
+                                "subscription-key=" + this.getString(R.string.MICROSOFT_COGNITIVE_SUBSCRIPTION_KEY) + "&" +
+                                "q=" + query, tts).execute();
+
+                    } catch (UnsupportedEncodingException e) {
+
+                        Log.e("Google Speech Input", e.getMessage());
+
+                    }
 
                 }
 
             }
 
-
         }
+    }
+
+    private String GetTargetedLanguage(int requestCode) {
+
+        if (requestCode == GoogleSpeech.Language.JAPANESE.ordinal())
+            return "日文";
+
+        if (requestCode == GoogleSpeech.Language.CANTONESE.ordinal())
+            return "广东话";
+
+        if (requestCode == GoogleSpeech.Language.ENGLISH.ordinal())
+            return "英文";
+
+        if (requestCode == GoogleSpeech.Language.INDONESIAN.ordinal())
+            return "印尼文";
+
+        if (requestCode == GoogleSpeech.Language.VIETNAMESE.ordinal())
+            return "越南文";
+
+        return "";
+
     }
 }
