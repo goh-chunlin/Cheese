@@ -1,11 +1,14 @@
 <resources>
     <string name="app_name">Cheese</string>
+
     <string name="logo_image_content_description">Cheese Logo</string>
+    <string name="flag_image_content_description">Flag</string>
 
     <color name="white">#FFFFFF</color>
 
     <string name="btn_voice_input_translation">翻译口语</string>
-    <string name="flag_image_content_description">Flag</string>
+    <string name="label_source_text">原文：</string>
+    <string name="label_result_text">译文：</string>
 
     <string name="voice_file_name">myvoice.mp3</string>
     <string name="title_activity_language_list">LanguageListActivity</string>

@@ -1,6 +1,7 @@
 package gclprojects.chunlin.cheese;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
@@ -23,7 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnVoiceInputTranslation;
 
+    TextView labelSourceText;
     TextView sourceText;
+    TextView labelResultText;
+    TextView resultText;
+
+    ProgressDialog progress;
 
     public static TextToSpeech tts;
 
@@ -42,7 +48,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        labelSourceText = (TextView) findViewById(R.id.labelSourceText);
+
+        labelResultText = (TextView) findViewById(R.id.labelResultText);
+
         sourceText = (TextView) findViewById(R.id.sourceText);
+
+        resultText = (TextView) findViewById(R.id.resultText);
 
         tts = new TextToSpeech(MainActivity.this, new TextToSpeech.OnInitListener() {
 
@@ -61,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (requestCode == LANGUAGE_LIST_REQUEST_CODE)
             {
+
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
                 intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hello!");
@@ -73,25 +86,36 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(RecognizerIntent.EXTRA_RESULTS, "zh");
 
                 startActivityForResult(intent, data.getIntExtra(LanguageListActivity.targetedLanguageRequestCode, -1));
+
             } else {
+
                 String targetedLanguage = GetTargetedLanguage(requestCode);
 
                 if (!targetedLanguage.isEmpty()) {
+                    progress = ProgressDialog.show(this, "翻译中...", "请稍等，正在处理您的讯息。", true);
 
                     ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
                     if (results.size() == 0) {
+
                         Toast.makeText(this, "请问你说什么呢?", Toast.LENGTH_LONG).show();
+
                     } else {
+
+                        labelSourceText.setVisibility(View.VISIBLE);
+                        labelResultText.setVisibility(View.INVISIBLE);
+                        resultText.setVisibility(View.INVISIBLE);
+
                         sourceText.setText(results.get(0));
 
                         try {
+
                             String query = URLEncoder.encode("请翻译" + results.get(0) + "去" + targetedLanguage, "utf-8");
 
                             new Cognitive(this, "https://api.projectoxford.ai/luis/v1/application?" +
                                     "id=" + this.getString(R.string.MICROSOFT_COGNITIVE_ID) + "&" +
                                     "subscription-key=" + this.getString(R.string.MICROSOFT_COGNITIVE_SUBSCRIPTION_KEY) + "&" +
-                                    "q=" + query, tts).execute();
+                                    "q=" + query, tts, progress).execute();
 
                         } catch (UnsupportedEncodingException e) {
 

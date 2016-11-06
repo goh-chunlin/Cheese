@@ -34,10 +34,42 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            android:text="@string/label_source_text"
+            android:id="@+id/labelSourceText"
+            android:layout_gravity="start" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
             android:text=""
             android:id="@+id/sourceText"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="start" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/colorSecondaryDark"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            android:text="@string/label_result_text"
+            android:id="@+id/labelResultText"
+            android:layout_gravity="start" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:text=""
+            android:id="@+id/resultText"
+            android:layout_gravity="start" />
 
     </LinearLayout>
 

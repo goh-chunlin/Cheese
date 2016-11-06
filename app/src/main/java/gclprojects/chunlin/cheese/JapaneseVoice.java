@@ -1,5 +1,6 @@
 package gclprojects.chunlin.cheese;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -16,10 +17,12 @@ import java.net.URL;
 public class JapaneseVoice extends AsyncTask<FileOutputStream, Void, BackgroundWork.Status> {
     private Context mContext;
     private String mTextToSpeak;
+    private ProgressDialog mProgress;
 
-    public JapaneseVoice (Context context, String textToSpeak) {
+    public JapaneseVoice (Context context, String textToSpeak, ProgressDialog progress) {
         mContext = context;
         mTextToSpeak = textToSpeak;
+        mProgress = progress;
     }
 
     protected BackgroundWork.Status doInBackground(FileOutputStream... fileOutputStream) {
@@ -70,6 +73,8 @@ public class JapaneseVoice extends AsyncTask<FileOutputStream, Void, BackgroundW
     }
 
     protected void onPostExecute(BackgroundWork.Status i) {
+        mProgress.dismiss();
+
         if (i != BackgroundWork.Status.FAILURE) {
             MediaPlayer mp = MediaPlayer.create(mContext, Uri.fromFile(mContext.getFileStreamPath("myvoice.mp3")));
             mp.setLooping(false);

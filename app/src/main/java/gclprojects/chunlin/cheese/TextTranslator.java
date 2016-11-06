@@ -1,9 +1,13 @@
 package gclprojects.chunlin.cheese;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,15 +22,19 @@ import java.util.Locale;
 
 public class TextTranslator extends AsyncTask<String, Void, String> {
     private Context mContext;
+    private Activity mActivity;
     private String mQuery;
     private String mUrl;
     private String mTargetLanguage;
     private TextToSpeech mTTS;
+    private ProgressDialog mProgress;
 
-    public TextTranslator(Context context, String query, String targetedLanguage, TextToSpeech tts) {
-        mContext = context;
+    public TextTranslator(Activity activity, String query, String targetedLanguage, TextToSpeech tts, ProgressDialog progress) {
+        mContext = activity.getApplicationContext();
+        mActivity = activity;
         mQuery = query;
         mTTS = tts;
+        mProgress = progress;
 
         String encodedQuery = "";
 
@@ -70,10 +78,19 @@ public class TextTranslator extends AsyncTask<String, Void, String> {
 
             final String translatedText = translationResultText;
 
+            TextView labelResultText = (TextView) mActivity.findViewById(R.id.labelResultText);
+            labelResultText.setVisibility(View.VISIBLE);
+
+            TextView resultText = (TextView) mActivity.findViewById(R.id.resultText);
+            resultText.setText(translatedText);
+            resultText.setVisibility(View.VISIBLE);
+
+            mActivity.setProgressBarVisibility(false);
+
             switch (mTargetLanguage) {
                 case "ja":
                     FileOutputStream outputStream = mContext.openFileOutput(mContext.getString(R.string.voice_file_name), Context.MODE_PRIVATE);
-                    new JapaneseVoice(mContext, translatedText).execute(outputStream);
+                    new JapaneseVoice(mContext, translatedText, mProgress).execute(outputStream);
                     break;
 
                 case "vi":
@@ -107,6 +124,8 @@ public class TextTranslator extends AsyncTask<String, Void, String> {
     }
 
     private TextToSpeech getTextToSpeechFromGoogle(final Locale targetedLocale, final String translatedText) {
+        mProgress.dismiss();
+
         return new TextToSpeech(mContext,
                 new TextToSpeech.OnInitListener() {
 

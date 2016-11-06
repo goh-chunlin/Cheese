@@ -1,5 +1,7 @@
 package gclprojects.chunlin.cheese;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.speech.tts.TextToSpeech;
@@ -12,15 +14,19 @@ import org.json.JSONObject;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-class Cognitive  extends AsyncTask<TextToSpeech, Void, String> {
+class Cognitive extends AsyncTask<TextToSpeech, Void, String> {
     private Context mContext;
+    private Activity mActivity;
     private String mUrl;
     private TextToSpeech mTTS;
+    private ProgressDialog mProgress;
 
-    Cognitive (Context context, String url, TextToSpeech tts) {
-        mContext = context;
+    Cognitive (Activity activity, String url, TextToSpeech tts, ProgressDialog progress) {
+        mContext = activity.getApplicationContext();
+        mActivity = activity;
         mUrl = url;
         mTTS = tts;
+        mProgress = progress;
     }
 
     @Override
@@ -83,38 +89,38 @@ class Cognitive  extends AsyncTask<TextToSpeech, Void, String> {
                                             if (desiredTargetLanguage.startsWith("日")) {
                                                 targetedLanguage = "ja";
 
-                                                new TextTranslator(mContext, query, targetedLanguage, mTTS).execute("");
+                                                new TextTranslator(mActivity, query, targetedLanguage, mTTS, mProgress).execute("");
                                             } else if (desiredTargetLanguage.startsWith("越南")) {
                                                 targetedLanguage = "vi";
 
-                                                new TextTranslator(mContext, query, targetedLanguage, mTTS).execute("");
+                                                new TextTranslator(mActivity, query, targetedLanguage, mTTS, mProgress).execute("");
                                             } else if (desiredTargetLanguage.startsWith("广东")) {
                                                 targetedLanguage = "zh&region=guangdong";
 
-                                                new TextTranslator(mContext, query, targetedLanguage, mTTS).execute("");
+                                                new TextTranslator(mActivity, query, targetedLanguage, mTTS, mProgress).execute("");
                                             } else if (desiredTargetLanguage.startsWith("英")) {
                                                 targetedLanguage = "en";
 
-                                                new TextTranslator(mContext, query, targetedLanguage, mTTS).execute("");
+                                                new TextTranslator(mActivity, query, targetedLanguage, mTTS, mProgress).execute("");
                                             } else if (desiredTargetLanguage.startsWith("印尼")) {
                                                 targetedLanguage = "id";
 
-                                                new TextTranslator(mContext, query, targetedLanguage, mTTS).execute("");
+                                                new TextTranslator(mActivity, query, targetedLanguage, mTTS, mProgress).execute("");
                                             }
                                         }
 
 
 
                                     } else {
-                                        new JapaneseVoice(mContext, "わかりません").execute(outputStream);
+                                        new JapaneseVoice(mContext, "わかりません", mProgress).execute(outputStream);
                                     }
 
                                 } else {
-                                    new JapaneseVoice(mContext, "簡単に日本語でご利用ください").execute(outputStream);
+                                    new JapaneseVoice(mContext, "簡単に日本語でご利用ください", mProgress).execute(outputStream);
                                 }
 
                             } else {
-                                new JapaneseVoice(mContext, "もう一回してください").execute(outputStream);
+                                new JapaneseVoice(mContext, "もう一回してください", mProgress).execute(outputStream);
                             }
 
 
