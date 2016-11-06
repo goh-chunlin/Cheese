@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="language_names">
+        <item>日语</item>
+        <item>广东话</item>
+        <item>英语</item>
+        <item>印尼语</item>
+        <item>越南语</item>
+    </string-array>
+
+    <string-array name="country_flags">
+        <item>@drawable/jp</item>
+        <item>@drawable/guangdong</item>
+        <item>@drawable/uk</item>
+        <item>@drawable/id</item>
+        <item>@drawable/vi</item>
+    </string-array>
+</resources>

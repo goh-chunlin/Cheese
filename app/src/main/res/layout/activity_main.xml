@@ -16,60 +16,17 @@
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:src="@drawable/cheese"
+            android:contentDescription="@string/logo_image_content_description"
             android:layout_height="200dp">
         </ImageView>
 
         <Button
-            android:id="@+id/btnVoiceInputReturnsJapanese"
+            android:id="@+id/btnVoiceInputTranslation"
             android:theme="@style/AppTheme.Button"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/btn_voice_input_to_japanese"
-            android:layout_marginTop="40dp"
-            android:textSize="26sp"
-            android:scaleType="centerInside" />
-
-        <Button
-            android:id="@+id/btnVoiceInputReturnsCantonese"
-            android:theme="@style/AppTheme.Button"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/btn_voice_input_to_cantonese"
-            android:layout_marginTop="40dp"
-            android:textSize="26sp"
-            android:scaleType="centerInside" />
-
-        <Button
-            android:id="@+id/btnVoiceInputReturnsEnglish"
-            android:theme="@style/AppTheme.Button"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/btn_voice_input_to_english"
-            android:layout_marginTop="40dp"
-            android:textSize="26sp"
-            android:scaleType="centerInside" />
-
-        <Button
-            android:id="@+id/btnVoiceInputReturnsIndonesian"
-            android:theme="@style/AppTheme.Button"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/btn_voice_input_to_indonesian"
-            android:layout_marginTop="40dp"
-            android:textSize="26sp"
-            android:scaleType="centerInside" />
-
-        <Button
-            android:id="@+id/btnVoiceInputReturnsVietnamese"
-            android:theme="@style/AppTheme.Button"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/btn_voice_input_to_vietnamese"
+            android:text="@string/btn_voice_input_translation"
             android:layout_marginTop="40dp"
             android:textSize="26sp"
             android:scaleType="centerInside" />

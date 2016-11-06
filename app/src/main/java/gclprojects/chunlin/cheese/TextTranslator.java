@@ -72,7 +72,7 @@ public class TextTranslator extends AsyncTask<String, Void, String> {
 
             switch (mTargetLanguage) {
                 case "ja":
-                    FileOutputStream outputStream = mContext.openFileOutput("myvoice.mp3", Context.MODE_PRIVATE);
+                    FileOutputStream outputStream = mContext.openFileOutput(mContext.getString(R.string.voice_file_name), Context.MODE_PRIVATE);
                     new JapaneseVoice(mContext, translatedText).execute(outputStream);
                     break;
 
@@ -101,7 +101,7 @@ public class TextTranslator extends AsyncTask<String, Void, String> {
 
         } catch (FileNotFoundException ex) {
 
-            Log.e("myvoice.mp4 Not Found", ex.getMessage());
+            Log.e(mContext.getString(R.string.voice_file_name) + " Not Found", ex.getMessage());
 
         }
     }

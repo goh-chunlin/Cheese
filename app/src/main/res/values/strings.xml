@@ -1,12 +1,14 @@
 <resources>
     <string name="app_name">Cheese</string>
+    <string name="logo_image_content_description">Cheese Logo</string>
 
     <color name="white">#FFFFFF</color>
 
-    <string name="btn_voice_input_to_japanese">日语</string>
-    <string name="btn_voice_input_to_cantonese">粤语</string>
-    <string name="btn_voice_input_to_english">英语</string>
-    <string name="btn_voice_input_to_indonesian">印尼语</string>
-    <string name="btn_voice_input_to_vietnamese">越南语</string>
-    <string name="action_settings">Settings</string>
+    <string name="btn_voice_input_translation">翻译口语</string>
+    <string name="flag_image_content_description">Flag</string>
+
+    <string name="voice_file_name">myvoice.mp3</string>
+    <string name="title_activity_language_list">LanguageListActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

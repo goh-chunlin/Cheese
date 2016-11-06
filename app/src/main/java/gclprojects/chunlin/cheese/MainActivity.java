@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -19,11 +20,9 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnVoiceInputReturnsJapanese;
-    Button btnVoiceInputReturnsCantonese;
-    Button btnVoiceInputReturnsEnglish;
-    Button btnVoiceInputReturnsIndonesian;
-    Button btnVoiceInputReturnsVietnamese;
+    private final int LANGUAGE_LIST_REQUEST_CODE = 100;
+
+    Button btnVoiceInputTranslation;
 
     public static TextToSpeech tts;
 
@@ -32,20 +31,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnVoiceInputReturnsJapanese = (Button) findViewById(R.id.btnVoiceInputReturnsJapanese);
-        btnVoiceInputReturnsJapanese.setOnClickListener(new ButtonVoiceInputReturnsJapanese(this));
+        final Intent languagePicker = new Intent(this, LanguageListActivity.class);
 
-        btnVoiceInputReturnsCantonese = (Button) findViewById(R.id.btnVoiceInputReturnsCantonese);
-        btnVoiceInputReturnsCantonese.setOnClickListener(new ButtonVoiceInputReturnsCantonese(this));
-
-        btnVoiceInputReturnsEnglish = (Button) findViewById(R.id.btnVoiceInputReturnsEnglish);
-        btnVoiceInputReturnsEnglish.setOnClickListener(new ButtonVoiceInputReturnsEnglish(this));
-
-        btnVoiceInputReturnsIndonesian = (Button) findViewById(R.id.btnVoiceInputReturnsIndonesian);
-        btnVoiceInputReturnsIndonesian.setOnClickListener(new ButtonVoiceInputReturnsIndonesian(this));
-
-        btnVoiceInputReturnsVietnamese = (Button) findViewById(R.id.btnVoiceInputReturnsVietnamese);
-        btnVoiceInputReturnsVietnamese.setOnClickListener(new ButtonVoiceInputReturnsVietnamese(this));
+        btnVoiceInputTranslation = (Button) findViewById(R.id.btnVoiceInputTranslation);
+        btnVoiceInputTranslation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(languagePicker, LANGUAGE_LIST_REQUEST_CODE);
+            }
+        });
 
         tts = new TextToSpeech(MainActivity.this, new TextToSpeech.OnInitListener() {
 
@@ -84,54 +78,61 @@ public class MainActivity extends AppCompatActivity {
 
         if (resultCode == Activity.RESULT_OK) {
 
-            String targetedLanguage = GetTargetedLanguage(requestCode);
+            if (requestCode == LANGUAGE_LIST_REQUEST_CODE)
+            {
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
-            if (!targetedLanguage.isEmpty()) {
+                intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hello!");
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "zh");
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "zh");
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "zh");
+                intent.putExtra(RecognizerIntent.EXTRA_SUPPORTED_LANGUAGES, "zh");
+                intent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, "zh");
+                intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "zh");
+                intent.putExtra(RecognizerIntent.EXTRA_RESULTS, "zh");
 
-                ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                startActivityForResult(intent, data.getIntExtra(LanguageListActivity.targetedLanguageRequestCode, -1));
+            } else {
+                String targetedLanguage = GetTargetedLanguage(requestCode);
 
-                if (results.size() == 0) {
-                    Toast.makeText(this, "何と言いましたか？", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(this, "あなたの言：" + results.get(0) , Toast.LENGTH_LONG).show();
+                if (!targetedLanguage.isEmpty()) {
 
-                    try {
-                        String query = URLEncoder.encode("请翻译" + results.get(0) + "去" + targetedLanguage, "utf-8");
+                    ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
-                        new Json(this, "https://api.projectoxford.ai/luis/v1/application?" +
-                                "id=" + this.getString(R.string.MICROSOFT_COGNITIVE_ID) + "&" +
-                                "subscription-key=" + this.getString(R.string.MICROSOFT_COGNITIVE_SUBSCRIPTION_KEY) + "&" +
-                                "q=" + query, tts).execute();
+                    if (results.size() == 0) {
+                        Toast.makeText(this, "请问你说什么呢?", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(this, "你说：" + results.get(0) , Toast.LENGTH_LONG).show();
 
-                    } catch (UnsupportedEncodingException e) {
+                        try {
+                            String query = URLEncoder.encode("请翻译" + results.get(0) + "去" + targetedLanguage, "utf-8");
 
-                        Log.e("Google Speech Input", e.getMessage());
+                            new Cognitive(this, "https://api.projectoxford.ai/luis/v1/application?" +
+                                    "id=" + this.getString(R.string.MICROSOFT_COGNITIVE_ID) + "&" +
+                                    "subscription-key=" + this.getString(R.string.MICROSOFT_COGNITIVE_SUBSCRIPTION_KEY) + "&" +
+                                    "q=" + query, tts).execute();
+
+                        } catch (UnsupportedEncodingException e) {
+
+                            Log.e("Google Speech Input", e.getMessage());
+
+                        }
 
                     }
 
                 }
-
             }
-
         }
     }
 
     private String GetTargetedLanguage(int requestCode) {
 
-        if (requestCode == GoogleSpeech.Language.JAPANESE.ordinal())
-            return "日文";
+        String[] languageNames = getResources().getStringArray(R.array.language_names);
 
-        if (requestCode == GoogleSpeech.Language.CANTONESE.ordinal())
-            return "广东话";
-
-        if (requestCode == GoogleSpeech.Language.ENGLISH.ordinal())
-            return "英文";
-
-        if (requestCode == GoogleSpeech.Language.INDONESIAN.ordinal())
-            return "印尼文";
-
-        if (requestCode == GoogleSpeech.Language.VIETNAMESE.ordinal())
-            return "越南文";
+        if (requestCode >= 0 && requestCode < languageNames.length)
+        {
+            return languageNames[requestCode];
+        }
 
         return "";
 
