@@ -15,6 +15,7 @@ My idea of using Microsoft Cognitive Services, especially Language Understanding
 from Riza Marhaban's presentation during [Microsoft Developer Day at National University of Singapore (NUS) in May 2016](https://www.microsoft.com/en-sg/MicrosoftDeveloperDay).
 
 ![Riza's Presentation about MS Cognitive APIs](github-images/Presentation.jpg?raw=true)
+Riza's Presentation about MS Cognitive APIs
 
 ## Project Objectives
  - Understand how to implement [Android Speech Recognizer](https://developer.android.com/reference/android/speech/SpeechRecognizer.html);
@@ -22,8 +23,10 @@ from Riza Marhaban's presentation during [Microsoft Developer Day at National Un
  - Play with [Japanese VoiceText API](http://voicetext.jp/) which allows emotions in the system generated voices.
 
 ![Using of "Translate" Intent in LUIS](github-images/LUIS.png?raw=true)
+Using of "Translate" Intent in LUIS
 
 ![VoiceText with Cute Voices from Japan](github-images/VoiceText.png?raw=true)
+VoiceText with Cute Voices from Japan
 
 ## Technologies Used
  - Android Speech Recognizer
