@@ -45,7 +45,7 @@ public class TextTranslator extends AsyncTask<String, Void, String> {
         }
 
         mUrl = "https://www.googleapis.com/language/translate/v2?" +
-                "key=" + mContext.getString(R.string.GOOGLE_SPEECH_API_KEY) + "&" +
+                "key=" + mContext.getString(R.string.GOOGLE_TRANSLATE_API_KEY) + "&" +
                 "q=" + encodedQuery +
                 "&source=zh&target=" + targetedLanguage;
 
