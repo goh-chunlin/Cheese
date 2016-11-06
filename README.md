@@ -18,6 +18,7 @@ from Riza Marhaban's presentation during [Microsoft Developer Day at National Un
 Riza's Presentation about MS Cognitive APIs
 
 ## Project Objectives
+ - Build a travel companion app which allows me travelling to Hong Kong and Japan alone and chat with the locals there;
  - Understand how to implement [Android Speech Recognizer](https://developer.android.com/reference/android/speech/SpeechRecognizer.html);
  - Learn LUIS - [Language Understanding Intelligence Service](https://www.luis.ai/) from MS Cognitive Services;
  - Play with [Japanese VoiceText API](http://voicetext.jp/) which allows emotions in the system generated voices.
